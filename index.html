@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Sohan is a video editor, graphic designer and videographer creating engaging digital content, short-form videos, social media edits, podcast clips, thumbnails and visual content.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Sohan — Video Editor, Graphic Designer & Videographer">
+  <meta property="og:description" content="Creating engaging digital content, short-form videos, social media edits, podcast clips, thumbnails and visual content.">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon placeholder -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23111' width='100' height='100' rx='12'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='%23fff'>S</text></svg>">
+
+  <title>Sohan — Video Editor, Graphic Designer & Videographer</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav__container">
+      <a href="#top" class="nav__logo">SOHAN</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav__menu" id="navMenu">
+        <a href="#work" class="nav__link">Work</a>
+        <a href="#about" class="nav__link">About</a>
+        <a href="#services" class="nav__link">Services</a>
+        <a href="#contact" class="nav__link">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero / Cinematic Section -->
+  <section class="hero" id="hero">
+    <div class="hero__stage" id="heroStage">
+      <!-- Hero background layers with video/image support -->
+      <div class="hero__layer hero__layer--1" id="heroLayer1">
+        <video class="hero__video" id="heroVideo1" muted loop playsinline preload="metadata">
+          <source src="assets/hero/hero-wide.mp4" type="video/mp4">
+        </video>
+        <div class="hero__placeholder" id="heroPlaceholder1">
+          <span class="hero__placeholder-text">[CINEMATIC EDITOR STUDIO]</span>
+          <span class="hero__placeholder-sub">Drop hero-wide.mp4 here</span>
+        </div>
+      </div>
+      <div class="hero__layer hero__layer--2" id="heroLayer2">
+        <video class="hero__video" id="heroVideo2" muted loop playsinline preload="metadata">
+          <source src="assets/hero/hero-editor.mp4" type="video/mp4">
+        </video>
+        <div class="hero__placeholder" id="heroPlaceholder2">
+          <span class="hero__placeholder-text">[EDITOR WORKSTATION]</span>
+          <span class="hero__placeholder-sub">Drop hero-editor.mp4 here</span>
+        </div>
+      </div>
+      <div class="hero__layer hero__layer--3" id="heroLayer3">
+        <video class="hero__video" id="heroVideo3" muted loop playsinline preload="metadata">
+          <source src="assets/hero/hero-monitor.mp4" type="video/mp4">
+        </video>
+        <div class="hero__placeholder" id="heroPlaceholder3">
+          <span class="hero__placeholder-text">[MONITOR / TIMELINE]</span>
+          <span class="hero__placeholder-sub">Drop hero-monitor.mp4 here</span>
+        </div>
+      </div>
+
+      <!-- Monitor transition overlay -->
+      <div class="hero__monitor" id="heroMonitor">
+        <div class="hero__monitor-screen">
+          <video class="hero__monitor-video" id="heroMonitorVideo" muted playsinline preload="metadata">
+            <source src="assets/hero/hero-video.mp4" type="video/mp4">
+          </video>
+          <div class="hero__video-placeholder" id="heroVideoPlaceholder">
+            <span class="hero__placeholder-text">[MAIN PORTFOLIO VIDEO]</span>
+            <span class="hero__placeholder-sub">Drop hero-video.mp4 here</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero overlay content -->
+    <div class="hero__content" id="heroContent">
+      <div class="hero__intro" id="heroIntro">
+        <h1 class="hero__title">SOHAN</h1>
+        <p class="hero__subtitle">Video Editor • Graphic Designer • Videographer</p>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="hero__scroll-hint" id="scrollHint">
+      <span class="hero__scroll-text">scroll</span>
+      <div class="hero__scroll-icon">
+        <div class="hero__scroll-wheel"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Selected Work / Portfolio -->
+  <section class="portfolio" id="work">
+    <div class="portfolio__header">
+      <span class="section-label">01</span>
+      <h2 class="section-title">Selected Work</h2>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="portfolio__filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="video-editing">Video Editing</button>
+      <button class="filter-btn" data-filter="reels">Reels</button>
+      <button class="filter-btn" data-filter="podcast">Podcast</button>
+      <button class="filter-btn" data-filter="graphics">Graphics</button>
+      <button class="filter-btn" data-filter="thumbnails">Thumbnails</button>
+      <button class="filter-btn" data-filter="videography">Videography</button>
+    </div>
+
+    <!-- Projects grid -->
+    <div class="portfolio__grid" id="portfolioGrid">
+      <!-- Projects loaded via JS from data -->
+    </div>
+  </section>
+
+  <!-- Creative Approach -->
+  <section class="approach" id="approach">
+    <div class="approach__container">
+      <div class="approach__header">
+        <span class="section-label">02</span>
+        <h2 class="section-title">How I Work</h2>
+      </div>
+
+      <div class="approach__grid">
+        <div class="approach__item">
+          <div class="approach__number">01</div>
+          <h3 class="approach__title">Clarity</h3>
+          <p class="approach__desc">The viewer should immediately understand what the content is about.</p>
+        </div>
+        <div class="approach__item">
+          <div class="approach__number">02</div>
+          <h3 class="approach__title">Pacing</h3>
+          <p class="approach__desc">Remove unnecessary dead space and maintain momentum.</p>
+        </div>
+        <div class="approach__item">
+          <div class="approach__number">03</div>
+          <h3 class="approach__title">Attention</h3>
+          <p class="approach__desc">The opening seconds need to give the viewer a reason to continue watching.</p>
+        </div>
+        <div class="approach__item">
+          <div class="approach__number">04</div>
+          <h3 class="approach__title">Story</h3>
+          <p class="approach__desc">Visuals should support what is being said instead of adding random effects.</p>
+        </div>
+        <div class="approach__item">
+          <div class="approach__number">05</div>
+          <h3 class="approach__title">Design</h3>
+          <p class="approach__desc">Graphics, captions and motion should improve the content rather than create chaos.</p>
+        </div>
+        <div class="approach__item">
+          <div class="approach__number">06</div>
+          <h3 class="approach__title">Platform</h3>
+          <p class="approach__desc">Content should be designed according to where it will be published.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="about__container">
+      <div class="about__image">
+        <div class="about__image-placeholder">
+          <span>[PROFILE IMAGE]</span>
+        </div>
+      </div>
+      <div class="about__content">
+        <span class="section-label">03</span>
+        <h2 class="section-title">About</h2>
+        <p class="about__text">
+          I'm Sohan, a video editor, graphic designer and videographer focused on creating engaging digital content.
+        </p>
+        <p class="about__text">
+          My work spans short-form videos, podcast and interview edits, social media content, thumbnails, graphic design and visual storytelling.
+        </p>
+        <p class="about__text">
+          I combine editing, design and content understanding to turn raw footage and ideas into polished content built for digital platforms.
+        </p>
+        <p class="about__text about__text--accent">
+          I'm particularly interested in editing that doesn't simply make footage look good, but improves how the story is communicated and keeps the audience engaged.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="services" id="services">
+    <div class="services__container">
+      <div class="services__header">
+        <span class="section-label">04</span>
+        <h2 class="section-title">Services</h2>
+      </div>
+
+      <div class="services__grid">
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="2" width="20" height="20" rx="2"/>
+              <path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Video Editing</h3>
+          <p class="service-card__desc">Professional editing for social media, YouTube, interviews, podcasts and digital content.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="M10 9l5 3-5 3V9z"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Short-Form Content</h3>
+          <p class="service-card__desc">Reels and Shorts built around hooks, pacing, captions and retention.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Podcast & Interview</h3>
+          <p class="service-card__desc">Turning longer conversations into engaging platform-ready clips.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Graphic Design</h3>
+          <p class="service-card__desc">Social media creatives, visual assets and digital graphics.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <path d="M21 15l-5-5L5 21"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Thumbnail Design</h3>
+          <p class="service-card__desc">High-impact YouTube and social media thumbnails.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Videography</h3>
+          <p class="service-card__desc">Shooting and capturing footage for digital content.</p>
+        </div>
+
+        <div class="service-card service-card--full">
+          <div class="service-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+              <circle cx="7.5" cy="14.5" r="1.5"/>
+              <circle cx="16.5" cy="14.5" r="1.5"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">AI-Assisted Production</h3>
+          <p class="service-card__desc">Using modern AI tools to support and accelerate creative production.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section class="skills" id="skills">
+    <div class="skills__container">
+      <div class="skills__header">
+        <span class="section-label">05</span>
+        <h2 class="section-title">Skills</h2>
+      </div>
+
+      <div class="skills__categories">
+        <div class="skill-category">
+          <h3 class="skill-category__title">Editing</h3>
+          <div class="skill-category__list">
+            <span class="skill-tag">Video Editing</span>
+            <span class="skill-tag">Short-Form</span>
+            <span class="skill-tag">Long-Form</span>
+            <span class="skill-tag">Social Media</span>
+            <span class="skill-tag">Podcast</span>
+            <span class="skill-tag">Interview</span>
+            <span class="skill-tag">Talking-Head</span>
+            <span class="skill-tag">Storytelling</span>
+            <span class="skill-tag">Pacing</span>
+            <span class="skill-tag">Retention</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3 class="skill-category__title">Motion & Visual</h3>
+          <div class="skill-category__list">
+            <span class="skill-tag">Motion Graphics</span>
+            <span class="skill-tag">Text Animation</span>
+            <span class="skill-tag">Dynamic Captions</span>
+            <span class="skill-tag">Transitions</span>
+            <span class="skill-tag">B-Roll</span>
+            <span class="skill-tag">Color Correction</span>
+            <span class="skill-tag">Sound Design</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3 class="skill-category__title">Design</h3>
+          <div class="skill-category__list">
+            <span class="skill-tag">Graphic Design</span>
+            <span class="skill-tag">Thumbnail Design</span>
+            <span class="skill-tag">Social Creatives</span>
+            <span class="skill-tag">Typography</span>
+            <span class="skill-tag">Composition</span>
+            <span class="skill-tag">Color</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3 class="skill-category__title">Content</h3>
+          <div class="skill-category__list">
+            <span class="skill-tag">Hook Creation</span>
+            <span class="skill-tag">Content Selection</span>
+            <span class="skill-tag">Repurposing</span>
+            <span class="skill-tag">Formatting</span>
+            <span class="skill-tag">Subtitles</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3 class="skill-category__title">AI Tools</h3>
+          <div class="skill-category__list">
+            <span class="skill-tag">Video Workflows</span>
+            <span class="skill-tag">Graphic Design</span>
+            <span class="skill-tag">Visual Concepts</span>
+            <span class="skill-tag">Voice Cloning</span>
+            <span class="skill-tag">Content Production</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact" id="contact">
+    <div class="contact__container">
+      <div class="contact__header">
+        <span class="section-label">06</span>
+        <h2 class="contact__title">Let's make something worth watching.</h2>
+      </div>
+
+      <div class="contact__links">
+        <a href="mailto:[EMAIL HERE]" class="contact__link contact__link--email">
+          <span class="contact__link-label">Email</span>
+          <span class="contact__link-value">[EMAIL HERE]</span>
+        </a>
+
+        <a href="[INSTAGRAM LINK]" class="contact__link contact__link--instagram" target="_blank" rel="noopener">
+          <span class="contact__link-label">Instagram</span>
+          <span class="contact__link-value">[INSTAGRAM]</span>
+        </a>
+
+        <a href="[LINKEDIN LINK]" class="contact__link contact__link--linkedin" target="_blank" rel="noopener">
+          <span class="contact__link-label">LinkedIn</span>
+          <span class="contact__link-value">[LINKEDIN]</span>
+        </a>
+
+        <a href="[OTHER LINK]" class="contact__link contact__link--other" target="_blank" rel="noopener">
+          <span class="contact__link-label">Other</span>
+          <span class="contact__link-value">[OTHER]</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video Overlay -->
+  <div class="video-overlay" id="videoOverlay">
+    <div class="video-overlay__container" id="videoOverlayContainer"></div>
+    <button class="video-overlay__close" id="videoOverlayClose" aria-label="Close video">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <p class="footer__text">© <span id="currentYear"></span> Sohan. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="config/personal.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

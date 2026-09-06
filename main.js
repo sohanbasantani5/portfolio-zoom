@@ -12,18 +12,12 @@
 
   const CONFIG = {
     // Cinematic scroll settings - extended journey
-    heroScrollHeight: 600, // vh units of scroll for full cinematic journey (doubled for more scenes)
-    scenes: 6, // Number of scenes in the journey
-    sceneTransitions: [
-      { start: 0, end: 16.67, scene: 1 },    // 0-100% of journey
-      { start: 16.67, end: 33.33, scene: 2 }, // 100-200%
-      { start: 33.33, end: 50, scene: 3 },    // 200-300%
-      { start: 50, end: 66.67, scene: 4 },    // 300-400%
-      { start: 66.67, end: 83.33, scene: 5 }, // 400-500%
-      { start: 83.33, end: 100, scene: 6 }     // 500-600%
-    ],
-    // Zoom settings per scene
-    zoomLevels: [1, 1.3, 1.6, 1.9, 2.2, 2.5], // Progressive zoom in
+    heroScrollHeight: 800, // vh units of scroll for full cinematic journey
+    scenes: 8, // Number of scenes in the journey
+    // Zoom settings per scene - dramatic zoom from 1x to 4x
+    zoomLevels: [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5],
+    // Parallax intensity per scene
+    parallaxIntensity: [0, 10, 20, 30, 40, 50, 60, 70],
     // Animation settings
     revealThreshold: 0.15,
     reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -43,6 +37,7 @@
     heroContent: document.getElementById('heroContent'),
     heroIntro: document.getElementById('heroIntro'),
     scrollHint: document.getElementById('scrollHint'),
+    heroProgressBar: document.getElementById('heroProgressBar'),
     portfolioGrid: document.getElementById('portfolioGrid'),
     filterBtns: document.querySelectorAll('.filter-btn'),
     videoOverlay: document.getElementById('videoOverlay'),
@@ -93,61 +88,90 @@
     const maxScroll = heroHeight - viewportHeight;
     const scrollProgress = Math.min(Math.max(state.scrollY / maxScroll, 0), 1);
 
-    // Calculate which scene we're in and progress within that scene
+    // Calculate scene progress
     const totalScenes = CONFIG.scenes;
     const sceneProgress = scrollProgress * totalScenes;
-    const currentSceneIndex = Math.min(Math.floor(sceneProgress), totalScenes - 1);
-    const sceneLocalProgress = sceneProgress - currentSceneIndex;
 
-    // Update each scene's transform based on its position relative to current scene
+    // Update progress bar
+    if (elements.heroProgressBar) {
+      elements.heroProgressBar.style.height = `${scrollProgress * 100}%`;
+    }
+
+    // Update each scene
     elements.heroScenes.forEach((scene, index) => {
+      const bg = scene.querySelector('.hero__scene-bg');
+      if (!bg) return;
+
       const sceneNum = index + 1;
       const distanceFromCurrent = index - sceneProgress;
+      const zoomLevel = CONFIG.zoomLevels[index] || 1;
+      const parallax = CONFIG.parallaxIntensity[index] || 0;
+
+      // Calculate transforms
+      let translateY, scale, bgPosition;
 
       if (distanceFromCurrent > 1) {
-        // Scene is below viewport - push down
-        scene.style.transform = `translateY(${distanceFromCurrent * 100}vh) scale(1)`;
-        scene.classList.remove('hero__scene--active', 'hero__scene--entering', 'hero__scene--exiting');
+        // Scene is below - push down and reset
+        translateY = distanceFromCurrent * 100;
+        scale = 1;
+        bgPosition = 'center center';
+        scene.classList.remove('hero__scene--active');
       } else if (distanceFromCurrent < -1) {
-        // Scene is above viewport - push up
-        scene.style.transform = `translateY(${distanceFromCurrent * 100}vh) scale(1)`;
-        scene.classList.remove('hero__scene--active', 'hero__scene--entering', 'hero__scene--exiting');
+        // Scene is above - push up and reset
+        translateY = distanceFromCurrent * 100;
+        scale = 1;
+        bgPosition = 'center center';
+        scene.classList.remove('hero__scene--active');
       } else {
-        // Scene is in viewport or transition zone
-        const baseY = distanceFromCurrent * 100;
-        const baseScale = CONFIG.zoomLevels[index] || 1;
+        // Scene is in transition zone
+        translateY = distanceFromCurrent * 50;
 
-        // Calculate zoom based on scene position
-        let scale, yOffset;
-
+        // Calculate scale based on distance from center
         if (distanceFromCurrent >= 0) {
-          // Scene is at or below current position - zooming in
-          const enterProgress = Math.max(0, 1 - distanceFromCurrent);
-          scale = 1 + (baseScale - 1) * (1 - enterProgress * 0.3);
-          yOffset = baseY;
+          // Below or at current - scale up as we approach
+          const enterScale = 1 + (zoomLevel - 1) * Math.max(0, 1 - distanceFromCurrent);
+          scale = enterScale;
         } else {
-          // Scene is above current position - zooming out
-          const exitProgress = Math.min(1, -distanceFromCurrent);
-          scale = baseScale - (baseScale - 1) * (1 - exitProgress * 0.3);
-          yOffset = baseY;
+          // Above - scale down as we leave
+          const exitScale = 1 + (zoomLevel - 1) * Math.min(1, 1 + distanceFromCurrent);
+          scale = exitScale;
         }
 
-        // Apply transform
-        scene.style.transform = `translateY(${yOffset}vh) scale(${scale})`;
+        // Parallax effect on background
+        const parallaxOffset = distanceFromCurrent * parallax;
+        bgPosition = `center ${parallaxOffset}%`;
 
-        // Add active classes
-        scene.classList.remove('hero__scene--active', 'hero__scene--entering', 'hero__scene--exiting');
-        if (Math.abs(distanceFromCurrent) < 0.1) {
+        // Active state
+        if (Math.abs(distanceFromCurrent) < 0.15) {
           scene.classList.add('hero__scene--active');
+        } else {
+          scene.classList.remove('hero__scene--active');
         }
+      }
+
+      // Apply transforms
+      scene.style.transform = `translateY(${translateY}vh)`;
+      if (bg) {
+        bg.style.transform = `scale(${scale})`;
+        bg.style.backgroundPosition = bgPosition;
+      }
+
+      // Fade labels based on proximity
+      const label = scene.querySelector('.hero__scene-label');
+      const title = scene.querySelector('.hero__scene-title');
+      if (label) {
+        label.style.opacity = Math.max(0, 1 - Math.abs(distanceFromCurrent) * 2);
+      }
+      if (title) {
+        title.style.opacity = Math.max(0, 1 - Math.abs(distanceFromCurrent) * 3);
       }
     });
 
     // Hero title visibility
-    if (scrollProgress < 0.1) {
+    if (scrollProgress < 0.05) {
       elements.heroIntro.classList.remove('hero__intro--hidden');
       elements.heroIntro.classList.add('hero__intro--visible');
-    } else if (scrollProgress >= 0.1 && scrollProgress < 0.2) {
+    } else if (scrollProgress >= 0.05 && scrollProgress < 0.1) {
       elements.heroIntro.classList.remove('hero__intro--visible', 'hero__intro--hidden');
     } else {
       elements.heroIntro.classList.remove('hero__intro--visible');
@@ -155,21 +179,11 @@
     }
 
     // Scroll hint visibility
-    if (scrollProgress < 0.05) {
+    if (scrollProgress < 0.02) {
       elements.scrollHint.classList.remove('hero__scroll-hint--hidden');
     } else {
       elements.scrollHint.classList.add('hero__scroll-hint--hidden');
     }
-
-    // Update scene label opacity
-    elements.heroScenes.forEach((scene, index) => {
-      const label = scene.querySelector('.hero__scene-label');
-      if (label) {
-        const distance = Math.abs(index - sceneProgress);
-        const opacity = Math.max(0, 1 - distance);
-        label.style.opacity = opacity;
-      }
-    });
   }
 
   // ============================================================================

@@ -43,46 +43,58 @@
 
   <!-- Hero / Cinematic Section -->
   <section class="hero" id="hero">
-    <div class="hero__stage" id="heroStage">
-      <!-- Hero background layers with video/image support -->
-      <div class="hero__layer hero__layer--1" id="heroLayer1">
-        <video class="hero__video" id="heroVideo1" muted loop playsinline preload="metadata">
-          <source src="assets/hero/hero-wide.mp4" type="video/mp4">
-        </video>
-        <div class="hero__placeholder" id="heroPlaceholder1">
-          <span class="hero__placeholder-text">[CINEMATIC EDITOR STUDIO]</span>
-          <span class="hero__placeholder-sub">Drop hero-wide.mp4 here</span>
-        </div>
-      </div>
-      <div class="hero__layer hero__layer--2" id="heroLayer2">
-        <video class="hero__video" id="heroVideo2" muted loop playsinline preload="metadata">
-          <source src="assets/hero/hero-editor.mp4" type="video/mp4">
-        </video>
-        <div class="hero__placeholder" id="heroPlaceholder2">
-          <span class="hero__placeholder-text">[EDITOR WORKSTATION]</span>
-          <span class="hero__placeholder-sub">Drop hero-editor.mp4 here</span>
-        </div>
-      </div>
-      <div class="hero__layer hero__layer--3" id="heroLayer3">
-        <video class="hero__video" id="heroVideo3" muted loop playsinline preload="metadata">
-          <source src="assets/hero/hero-monitor.mp4" type="video/mp4">
-        </video>
-        <div class="hero__placeholder" id="heroPlaceholder3">
-          <span class="hero__placeholder-text">[MONITOR / TIMELINE]</span>
-          <span class="hero__placeholder-sub">Drop hero-monitor.mp4 here</span>
+    <div class="hero__cinematic-container" id="heroCinematicContainer">
+      <!-- Scene 1: Workspace Wide Shot -->
+      <div class="hero__scene hero__scene--1" data-scene="1">
+        <div class="hero__scene-bg" style="background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1920&q=80')"></div>
+        <div class="hero__scene-overlay"></div>
+        <div class="hero__scene-content">
+          <span class="hero__scene-label">The Workspace</span>
         </div>
       </div>
 
-      <!-- Monitor transition overlay -->
-      <div class="hero__monitor" id="heroMonitor">
-        <div class="hero__monitor-screen">
-          <video class="hero__monitor-video" id="heroMonitorVideo" muted playsinline preload="metadata">
-            <source src="assets/hero/hero-video.mp4" type="video/mp4">
-          </video>
-          <div class="hero__video-placeholder" id="heroVideoPlaceholder">
-            <span class="hero__placeholder-text">[MAIN PORTFOLIO VIDEO]</span>
-            <span class="hero__placeholder-sub">Drop hero-video.mp4 here</span>
-          </div>
+      <!-- Scene 2: Editor's Desk - Getting Closer -->
+      <div class="hero__scene hero__scene--2" data-scene="2">
+        <div class="hero__scene-bg" style="background-image: url('https://images.unsplash.com/photo-1593642532400-2682810df593?w=1920&q=80')"></div>
+        <div class="hero__scene-overlay"></div>
+        <div class="hero__scene-content">
+          <span class="hero__scene-label">Creative Process</span>
+        </div>
+      </div>
+
+      <!-- Scene 3: Screen Close-up -->
+      <div class="hero__scene hero__scene--3" data-scene="3">
+        <div class="hero__scene-bg" style="background-image: url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1920&q=80')"></div>
+        <div class="hero__scene-overlay"></div>
+        <div class="hero__scene-content">
+          <span class="hero__scene-label">Editing Magic</span>
+        </div>
+      </div>
+
+      <!-- Scene 4: Colors & Graphics -->
+      <div class="hero__scene hero__scene--4" data-scene="4">
+        <div class="hero__scene-bg" style="background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=80')"></div>
+        <div class="hero__scene-overlay"></div>
+        <div class="hero__scene-content">
+          <span class="hero__scene-label">Visual Design</span>
+        </div>
+      </div>
+
+      <!-- Scene 5: Final Output -->
+      <div class="hero__scene hero__scene--5" data-scene="5">
+        <div class="hero__scene-bg" style="background-image: url('https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1920&q=80')"></div>
+        <div class="hero__scene-overlay"></div>
+        <div class="hero__scene-content">
+          <span class="hero__scene-label">Cinematic Output</span>
+        </div>
+      </div>
+
+      <!-- Scene 6: Content Creation -->
+      <div class="hero__scene hero__scene--6" data-scene="6">
+        <div class="hero__scene-bg" style="background-image: url('https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1920&q=80')"></div>
+        <div class="hero__scene-overlay"></div>
+        <div class="hero__scene-content">
+          <span class="hero__scene-label">Content Created</span>
         </div>
       </div>
     </div>
@@ -97,7 +109,7 @@
 
     <!-- Scroll indicator -->
     <div class="hero__scroll-hint" id="scrollHint">
-      <span class="hero__scroll-text">scroll</span>
+      <span class="hero__scroll-text">scroll to explore</span>
       <div class="hero__scroll-icon">
         <div class="hero__scroll-wheel"></div>
       </div>

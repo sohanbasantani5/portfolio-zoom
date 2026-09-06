@@ -11,14 +11,19 @@
   // ============================================================================
 
   const CONFIG = {
-    // Cinematic scroll settings
-    heroScrollHeight: 300, // vh units of scroll for full cinematic journey
-    layerTransitions: [
-      { start: 0, end: 25, layer: 1 },
-      { start: 25, end: 50, layer: 2 },
-      { start: 50, end: 75, layer: 3 },
-      { start: 75, end: 100, monitor: true }
+    // Cinematic scroll settings - extended journey
+    heroScrollHeight: 600, // vh units of scroll for full cinematic journey (doubled for more scenes)
+    scenes: 6, // Number of scenes in the journey
+    sceneTransitions: [
+      { start: 0, end: 16.67, scene: 1 },    // 0-100% of journey
+      { start: 16.67, end: 33.33, scene: 2 }, // 100-200%
+      { start: 33.33, end: 50, scene: 3 },    // 200-300%
+      { start: 50, end: 66.67, scene: 4 },    // 300-400%
+      { start: 66.67, end: 83.33, scene: 5 }, // 400-500%
+      { start: 83.33, end: 100, scene: 6 }     // 500-600%
     ],
+    // Zoom settings per scene
+    zoomLevels: [1, 1.3, 1.6, 1.9, 2.2, 2.5], // Progressive zoom in
     // Animation settings
     revealThreshold: 0.15,
     reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -33,15 +38,8 @@
     navToggle: document.getElementById('navToggle'),
     navMenu: document.getElementById('navMenu'),
     hero: document.getElementById('hero'),
-    heroStage: document.getElementById('heroStage'),
-    heroLayers: [
-      { layer: document.getElementById('heroLayer1'), video: document.getElementById('heroVideo1'), placeholder: document.getElementById('heroPlaceholder1') },
-      { layer: document.getElementById('heroLayer2'), video: document.getElementById('heroVideo2'), placeholder: document.getElementById('heroPlaceholder2') },
-      { layer: document.getElementById('heroLayer3'), video: document.getElementById('heroVideo3'), placeholder: document.getElementById('heroPlaceholder3') }
-    ],
-    heroMonitor: document.getElementById('heroMonitor'),
-    heroMonitorVideo: document.getElementById('heroMonitorVideo'),
-    heroVideoPlaceholder: document.getElementById('heroVideoPlaceholder'),
+    heroCinematicContainer: document.getElementById('heroCinematicContainer'),
+    heroScenes: document.querySelectorAll('.hero__scene'),
     heroContent: document.getElementById('heroContent'),
     heroIntro: document.getElementById('heroIntro'),
     scrollHint: document.getElementById('scrollHint'),
@@ -71,10 +69,19 @@
   function initCinematicHero() {
     if (CONFIG.reducedMotion) {
       // Simplified animation for reduced motion
-      elements.heroLayers[0].layer.classList.add('hero__layer--active');
+      elements.heroScenes[0].classList.add('hero__scene--active');
       elements.heroIntro.classList.add('hero__intro--visible');
       return;
     }
+
+    // Preload images for smoother experience
+    elements.heroScenes.forEach(scene => {
+      const bg = scene.querySelector('.hero__scene-bg');
+      if (bg) {
+        const img = new Image();
+        img.src = bg.style.backgroundImage.replace(/url\(['"]?(.+?)['"]?\)/, '$1');
+      }
+    });
 
     // Initialize hero scroll tracking
     updateCinematicHero();
@@ -84,38 +91,63 @@
     const heroHeight = elements.hero.offsetHeight;
     const viewportHeight = window.innerHeight;
     const maxScroll = heroHeight - viewportHeight;
-    const scrollProgress = Math.min(state.scrollY / maxScroll, 1) * 100;
+    const scrollProgress = Math.min(Math.max(state.scrollY / maxScroll, 0), 1);
 
-    // Update layers based on scroll progress
-    elements.heroLayers.forEach((layerObj, index) => {
-      const layerProgress = (index + 1) * 25; // 25, 50, 75
-      const layer = layerObj.layer;
+    // Calculate which scene we're in and progress within that scene
+    const totalScenes = CONFIG.scenes;
+    const sceneProgress = scrollProgress * totalScenes;
+    const currentSceneIndex = Math.min(Math.floor(sceneProgress), totalScenes - 1);
+    const sceneLocalProgress = sceneProgress - currentSceneIndex;
 
-      if (scrollProgress < layerProgress - 10) {
-        layer.classList.remove('hero__layer--active');
-      } else if (scrollProgress >= layerProgress - 10 && scrollProgress < layerProgress + 10) {
-        layer.classList.add('hero__layer--active');
-        // Scale effect for camera zoom
-        const layerScale = 1 + ((scrollProgress - (layerProgress - 10)) / 20) * 0.15;
-        layer.style.transform = `translateZ(0) scale(${Math.min(layerScale, 1.15)})`;
+    // Update each scene's transform based on its position relative to current scene
+    elements.heroScenes.forEach((scene, index) => {
+      const sceneNum = index + 1;
+      const distanceFromCurrent = index - sceneProgress;
+
+      if (distanceFromCurrent > 1) {
+        // Scene is below viewport - push down
+        scene.style.transform = `translateY(${distanceFromCurrent * 100}vh) scale(1)`;
+        scene.classList.remove('hero__scene--active', 'hero__scene--entering', 'hero__scene--exiting');
+      } else if (distanceFromCurrent < -1) {
+        // Scene is above viewport - push up
+        scene.style.transform = `translateY(${distanceFromCurrent * 100}vh) scale(1)`;
+        scene.classList.remove('hero__scene--active', 'hero__scene--entering', 'hero__scene--exiting');
       } else {
-        layer.classList.add('hero__layer--active');
+        // Scene is in viewport or transition zone
+        const baseY = distanceFromCurrent * 100;
+        const baseScale = CONFIG.zoomLevels[index] || 1;
+
+        // Calculate zoom based on scene position
+        let scale, yOffset;
+
+        if (distanceFromCurrent >= 0) {
+          // Scene is at or below current position - zooming in
+          const enterProgress = Math.max(0, 1 - distanceFromCurrent);
+          scale = 1 + (baseScale - 1) * (1 - enterProgress * 0.3);
+          yOffset = baseY;
+        } else {
+          // Scene is above current position - zooming out
+          const exitProgress = Math.min(1, -distanceFromCurrent);
+          scale = baseScale - (baseScale - 1) * (1 - exitProgress * 0.3);
+          yOffset = baseY;
+        }
+
+        // Apply transform
+        scene.style.transform = `translateY(${yOffset}vh) scale(${scale})`;
+
+        // Add active classes
+        scene.classList.remove('hero__scene--active', 'hero__scene--entering', 'hero__scene--exiting');
+        if (Math.abs(distanceFromCurrent) < 0.1) {
+          scene.classList.add('hero__scene--active');
+        }
       }
     });
 
-    // Monitor transition
-    if (scrollProgress >= 75) {
-      elements.heroMonitor.classList.add('hero__monitor--active');
-      elements.heroLayers.forEach(layerObj => layerObj.layer.classList.remove('hero__layer--active'));
-    } else {
-      elements.heroMonitor.classList.remove('hero__monitor--active');
-    }
-
     // Hero title visibility
-    if (scrollProgress < 15) {
+    if (scrollProgress < 0.1) {
       elements.heroIntro.classList.remove('hero__intro--hidden');
       elements.heroIntro.classList.add('hero__intro--visible');
-    } else if (scrollProgress >= 15 && scrollProgress < 30) {
+    } else if (scrollProgress >= 0.1 && scrollProgress < 0.2) {
       elements.heroIntro.classList.remove('hero__intro--visible', 'hero__intro--hidden');
     } else {
       elements.heroIntro.classList.remove('hero__intro--visible');
@@ -123,11 +155,21 @@
     }
 
     // Scroll hint visibility
-    if (scrollProgress < 5) {
+    if (scrollProgress < 0.05) {
       elements.scrollHint.classList.remove('hero__scroll-hint--hidden');
     } else {
       elements.scrollHint.classList.add('hero__scroll-hint--hidden');
     }
+
+    // Update scene label opacity
+    elements.heroScenes.forEach((scene, index) => {
+      const label = scene.querySelector('.hero__scene-label');
+      if (label) {
+        const distance = Math.abs(index - sceneProgress);
+        const opacity = Math.max(0, 1 - distance);
+        label.style.opacity = opacity;
+      }
+    });
   }
 
   // ============================================================================
